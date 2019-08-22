@@ -86,6 +86,18 @@ class Singleton(BaseTask):
         shadow=None,
         **options
     ):
+        if self.singleton_config.app.conf.task_always_eager:
+            return super(Singleton, self).apply_async(
+                args,
+                kwargs,
+                task_id,
+                producer,
+                link,
+                link_error,
+                shadow,
+                **options
+            )
+
         args = args or []
         kwargs = kwargs or {}
         task_id = task_id or uuid()
